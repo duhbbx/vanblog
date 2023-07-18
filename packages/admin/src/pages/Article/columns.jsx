@@ -13,6 +13,7 @@ export const columns = [
     title: 'ID',
     width: 48,
     search: false,
+    editable: false,
   },
   {
     title: '标题',
@@ -20,6 +21,7 @@ export const columns = [
     width: 150,
     copyable: true,
     ellipsis: true,
+    editable: true,
     formItemProps: {
       rules: [
         {
@@ -34,6 +36,7 @@ export const columns = [
     dataIndex: 'category',
     valueType: 'select',
     width: 100,
+    editable: true,
     request: async () => {
       const { data: categories } = await getAllCategories();
       const data = categories.map((each) => ({
@@ -50,6 +53,7 @@ export const columns = [
     fieldProps: { showSearch: true, placeholder: '请搜索或选择' },
     width: 120,
     search: true,
+    editable: true,
     renderFormItem: (_, { defaultRender }) => {
       return defaultRender(_);
     },
@@ -81,6 +85,7 @@ export const columns = [
     sorter: true,
     hideInSearch: true,
     width: 150,
+    editable: true,
   },
   {
     title: '顶置',
@@ -99,6 +104,7 @@ export const columns = [
     sorter: true,
     width: 80,
     hideInSearch: true,
+    editable: false,
   },
   {
     title: '创建时间',
@@ -124,6 +130,16 @@ export const columns = [
         <Space>
           <ColumnsToolBar
             outs={[
+
+              <a
+                key={'inline-edit' + record.id}
+                onClick={() => {
+                  action?.startEditable?.(record.id);
+                }}
+              >
+                test
+              </a>,
+
               <a
                 key={'editable' + record.id}
                 onClick={() => {

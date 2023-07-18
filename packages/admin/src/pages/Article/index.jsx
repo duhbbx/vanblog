@@ -1,21 +1,29 @@
 import ImportArticleModal from '@/components/ImportArticleModal';
 import NewArticleModal from '@/components/NewArticleModal';
 import { getArticlesByOption } from '@/services/van-blog/api';
-import {batchExport,batchDelete} from "@/services/van-blog/batch";
+import { batchExport, batchDelete } from "@/services/van-blog/batch";
 import { useNum } from '@/services/van-blog/useNum';
-import { PageContainer, ProTable } from '@ant-design/pro-components';
+import { PageContainer, ProTable, EditableProTable } from '@ant-design/pro-components';
 import { Button, Space, message } from 'antd';
 import RcResizeObserver from 'rc-resize-observer';
 import { useMemo, useRef, useState } from 'react';
 import { history } from 'umi';
 import { articleObjAll, articleObjSmall, columns } from './columns';
 
+import React from 'react';
+
+import { updateArticle, createArticle } from '@/services/van-blog/api';
+
 export default () => {
+
+
+
+  // const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const actionRef = useRef();
   const [colKeys, setColKeys] = useState(articleObjAll);
   const [simplePage, setSimplePage] = useState(false);
   const [simpleSearch, setSimpleSearch] = useState(false);
-  const [pageSize, setPageSize] = useNum(10, 'article-page-size');
+  const [pageSize, setPageSize] = useNum(20, 'article-page-size');
   const searchSpan = useMemo(() => {
     if (!simpleSearch) {
       return 8;
@@ -46,10 +54,19 @@ export default () => {
           //  小屏幕的话把默认的 col keys 删掉一些
         }}
       >
-        <ProTable
+        <EditableProTable
           columns={columns}
           actionRef={actionRef}
           cardBordered
+
+          recordCreatorProps={
+            {
+              position: 'top',
+              record: () => ({ id: -1 * (Math.random() * 1000000).toFixed(0) }),
+            }
+
+          }
+
           rowSelection={{
             fixed: true,
             preserveSelectedRowKeys: true,
@@ -137,7 +154,26 @@ export default () => {
               total: total,
             };
           }}
-          editable={false}
+          editable={{
+            type: 'multiple',
+            // editableKeys,
+            onSave: async (rowKey, data, row) => {
+              console.log(rowKey, data, row);
+
+              data.id = undefined
+              if (rowKey > 0) {
+                // 编辑
+                updateArticle(rowKey, data)
+              } else {
+                // 新增
+                createArticle(data)
+              }
+
+              data.id = rowKey
+
+            },
+            // onChange: setEditableRowKeys,
+          }}
           columnsState={{
             // persistenceKey: 'van-blog-article-table',
             // persistenceType: 'localStorage',
