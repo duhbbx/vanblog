@@ -87,25 +87,25 @@ export const columns = [
     width: 150,
     editable: true,
   },
-  {
-    title: '顶置',
-    key: 'top',
-    dataIndex: 'top',
-    valueType: 'number',
-    sorter: true,
-    width: 80,
-    hideInSearch: true,
-  },
-  {
-    title: '浏览量',
-    key: 'viewer',
-    dataIndex: 'viewer',
-    valueType: 'number',
-    sorter: true,
-    width: 80,
-    hideInSearch: true,
-    editable: false,
-  },
+  // {
+  //   title: '顶置',
+  //   key: 'top',
+  //   dataIndex: 'top',
+  //   valueType: 'number',
+  //   sorter: true,
+  //   width: 80,
+  //   hideInSearch: true,
+  // },
+  // {
+  //   title: '浏览量',
+  //   key: 'viewer',
+  //   dataIndex: 'viewer',
+  //   valueType: 'number',
+  //   sorter: true,
+  //   width: 80,
+  //   hideInSearch: true,
+  //   editable: false,
+  // },
   {
     title: '创建时间',
     dataIndex: 'createdAt',
@@ -137,7 +137,7 @@ export const columns = [
                   action?.startEditable?.(record.id);
                 }}
               >
-                test
+                行内编辑
               </a>,
 
               <a
@@ -148,7 +148,7 @@ export const columns = [
                   );
                 }}
               >
-                编辑
+                编辑内容
               </a>,
               <a
                 href={`/post/${getPathname(record)}`}
@@ -191,6 +191,9 @@ export const columns = [
                 查看
               </a>,
             ]}
+
+            nodes={[]}
+            /*
             nodes={[
               <UpdateModal
                 currObj={record}
@@ -237,6 +240,7 @@ export const columns = [
                 删除
               </a>,
             ]}
+            */
           />
         </Space>
       );

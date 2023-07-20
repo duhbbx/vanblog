@@ -62,7 +62,10 @@ export default () => {
           recordCreatorProps={
             {
               position: 'top',
-              record: () => ({ id: -1 * (Math.random() * 1000000).toFixed(0) }),
+              record: () => ({
+                id: -1 * (Math.random() * 1000000).toFixed(0),
+                category: '未分类'
+              }),
             }
 
           }
@@ -166,10 +169,13 @@ export default () => {
                 updateArticle(rowKey, data)
               } else {
                 // 新增
-                createArticle(data)
+                const results = await createArticle(data)
+
+                console.log(results)
+                data.id = results.data.id
               }
 
-              data.id = rowKey
+              // data.id = rowKey
 
             },
             // onChange: setEditableRowKeys,

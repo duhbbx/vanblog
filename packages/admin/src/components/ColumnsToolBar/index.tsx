@@ -14,7 +14,8 @@ export default function (props: { nodes: any[]; outs: any[] }) {
   return (
     <Space>
       {props.outs}
-      <Dropdown menu={{ items }} trigger={["click"]}>
+      
+      {/* <Dropdown menu={{ items }} trigger={["click"]}>
         <a className="more-hover">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +31,7 @@ export default function (props: { nodes: any[]; outs: any[] }) {
             <path d="M223.962 607.898c-52.98 0-95.984-43.004-95.984-95.984s43.004-95.984 95.984-95.984 95.984 43.004 95.984 95.984-43.003 95.984-95.984 95.984zM511.914 607.898c-52.98 0-95.984-43.004-95.984-95.984s43.004-95.984 95.984-95.984 95.984 43.004 95.984 95.984-43.004 95.984-95.984 95.984zM800.038 607.898c-52.98 0-95.984-43.004-95.984-95.984s43.003-95.984 95.984-95.984 95.984 43.004 95.984 95.984-43.176 95.984-95.984 95.984z" />
           </svg>
         </a>
-      </Dropdown>
+      </Dropdown> */}
     </Space>
   );
 }
