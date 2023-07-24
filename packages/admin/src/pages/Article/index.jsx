@@ -163,6 +163,14 @@ export default () => {
             onSave: async (rowKey, data, row) => {
               console.log(rowKey, data, row);
 
+              data.tags = Array.from(
+                new Set(
+                    data.tags?.split(",")
+                    .map(v => v.trim())
+                    .filter(v => !!v)
+                )
+            )
+
               data.id = undefined
               if (rowKey > 0) {
                 // 编辑
@@ -207,28 +215,35 @@ export default () => {
           headerTitle={simpleSearch ? undefined : '文章管理'}
           options={simpleSearch ? false : true}
           toolBarRender={() => [
+            // <Button
+            //   key="editAboutMe"
+            //   onClick={() => {
+            //     history.push(`/editor?type=about&id=${0}`);
+            //   }}
+            // >
+            //   {`编辑关于`}
+            // </Button>,
+
+
             <Button
-              key="editAboutMe"
+              key="backBtn"
+              type="primary"
               onClick={() => {
-                history.push(`/editor?type=about&id=${0}`);
+
+                window.open('/admin/new-or-edit?type=article', '_blank');
+
               }}
             >
-              {`编辑关于`}
+              新建
             </Button>,
-            <NewArticleModal
-              key="newArticle123"
-              onFinish={(data) => {
-                actionRef?.current?.reload();
-                history.push(`/editor?type=article&id=${data.id}`);
-              }}
-            />,
-            <ImportArticleModal
-              key="importArticleBtn"
-              onFinish={() => {
-                actionRef?.current?.reload();
-                message.success('导入成功！');
-              }}
-            />,
+
+            // <ImportArticleModal
+            //   key="importArticleBtn"
+            //   onFinish={() => {
+            //     actionRef?.current?.reload();
+            //     message.success('导入成功！');
+            //   }}
+            // />,
           ]}
         />
       </RcResizeObserver>

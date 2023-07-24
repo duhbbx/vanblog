@@ -9,13 +9,20 @@ export default [
     ],
   },
   { path: '/init', layout: false, component: './InitPage' },
-  { path: '/welcome', name: '分析概览', icon: 'smile', component: './Welcome', access: 'isAdmin' },
+  // { path: '/welcome', name: '分析概览', icon: 'smile', component: './Welcome', access: 'isAdmin' },
   { name: '文章管理', icon: 'form', path: '/article', component: './Article' },
   {
     name: '图形编辑器',
     icon: 'form',
     path: '/editor',
     component: './Editor',
+    hideInMenu: true,
+  },
+  {
+    name: '新建或编辑',
+    icon: 'form',
+    path: '/new-or-edit',
+    component: './NewOrEdit',
     hideInMenu: true,
   },
   {
@@ -33,7 +40,7 @@ export default [
     component: './About',
     hideInMenu: true,
   },
-  { name: '草稿管理', icon: 'container', path: '/draft', component: './Draft' },
+  // { name: '草稿管理', icon: 'container', path: '/draft', component: './Draft' },
   {
     name: '图片管理',
     icon: 'picture',

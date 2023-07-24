@@ -144,12 +144,30 @@ export const columns = [
                 key={'editable' + record.id}
                 onClick={() => {
                   history.push(
-                    `/editor?type=${record?.about ? 'about' : 'article'}&id=${record.id}`,
+                    `/new-or-edit?type=${record?.about ? 'about' : 'article'}&id=${record.id}`,
                   );
                 }}
               >
-                编辑内容
+                编辑
               </a>,
+
+
+              <a
+                key={'deleteArticle' + record.id}
+                onClick={() => {
+                  Modal.confirm({
+                    title: `确定删除 "${record.title}"吗？`,
+                    onOk: async () => {
+                      await deleteArticle(record.id);
+                      message.success('删除成功!');
+                      action?.reload();
+                    },
+                  });
+                }}
+              >
+                删除
+              </a>,
+
               <a
                 href={`/post/${getPathname(record)}`}
                 onClick={(ev) => {
@@ -193,54 +211,54 @@ export const columns = [
             ]}
 
             nodes={[]}
-            /*
-            nodes={[
-              <UpdateModal
-                currObj={record}
-                setLoading={() => {}}
-                type="article"
-                onFinish={() => {
-                  action?.reload();
-                }}
-              />,
-              <a
-                key={'exportArticle' + record.id}
-                onClick={async () => {
-                  const { data: obj } = await getArticleById(record.id);
-                  const md = parseObjToMarkdown(obj);
-                  const data = new Blob([md]);
-                  const url = URL.createObjectURL(data);
-                  const link = document.createElement('a');
-                  link.href = url;
-                  link.download = `${record.title}.md`;
-                  link.click();
-                }}
-              >
-                导出
-              </a>,
-              <a
-                key={'deleteArticle' + record.id}
-                onClick={() => {
-                  Modal.confirm({
-                    title: `确定删除 "${record.title}"吗？`,
-                    onOk: async () => {
-                      if (location.hostname == 'blog-demo.mereith.com') {
-                        if ([28, 29].includes(record.id)) {
-                          message.warn('演示站禁止删除此文章！');
-                          return false;
-                        }
+          /*
+          nodes={[
+            <UpdateModal
+              currObj={record}
+              setLoading={() => {}}
+              type="article"
+              onFinish={() => {
+                action?.reload();
+              }}
+            />,
+            <a
+              key={'exportArticle' + record.id}
+              onClick={async () => {
+                const { data: obj } = await getArticleById(record.id);
+                const md = parseObjToMarkdown(obj);
+                const data = new Blob([md]);
+                const url = URL.createObjectURL(data);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `${record.title}.md`;
+                link.click();
+              }}
+            >
+              导出
+            </a>,
+            <a
+              key={'deleteArticle' + record.id}
+              onClick={() => {
+                Modal.confirm({
+                  title: `确定删除 "${record.title}"吗？`,
+                  onOk: async () => {
+                    if (location.hostname == 'blog-demo.mereith.com') {
+                      if ([28, 29].includes(record.id)) {
+                        message.warn('演示站禁止删除此文章！');
+                        return false;
                       }
-                      await deleteArticle(record.id);
-                      message.success('删除成功!');
-                      action?.reload();
-                    },
-                  });
-                }}
-              >
-                删除
-              </a>,
-            ]}
-            */
+                    }
+                    await deleteArticle(record.id);
+                    message.success('删除成功!');
+                    action?.reload();
+                  },
+                });
+              }}
+            >
+              删除
+            </a>,
+          ]}
+          */
           />
         </Space>
       );
