@@ -96,7 +96,8 @@ export default function () {
       } else {
         document.title = '新文章';
         const data = {
-          content: ''
+          content: '',
+          category: '未分类'
         }
         setValue(data?.content || '');
         setCurrObj(data);
@@ -238,7 +239,7 @@ export default function () {
               }
             }}
           >
-            返回
+            查看
           </Button>
         ],
         breadcrumb: {},

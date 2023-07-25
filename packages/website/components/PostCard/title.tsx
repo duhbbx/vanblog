@@ -47,7 +47,7 @@ export function Title(props: {
           href={
             props.type === "about"
               ? "/admin/editor?type=about"
-              : `/admin/editor?type=article&id=${props.id}`
+              : `/admin/new-or-edit?type=article&id=${props.id}`
           }
           target="_blank"
         >
