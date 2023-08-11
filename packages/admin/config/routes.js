@@ -40,7 +40,7 @@ export default [
     component: './About',
     hideInMenu: true,
   },
-  // { name: '草稿管理', icon: 'container', path: '/draft', component: './Draft' },
+  { name: '草稿管理', icon: 'container', path: '/draft', component: './Draft' },
   {
     name: '图片管理',
     icon: 'picture',
