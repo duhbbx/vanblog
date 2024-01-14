@@ -181,7 +181,7 @@ export default function () {
         title: (
           <Form layout="inline" form={form}>
             <ProFormText
-              width="lg"
+              width={450}
               required
               id="title"
               name="title"
@@ -191,7 +191,7 @@ export default function () {
             />
 
             <ProFormSelect
-              width="lg"
+              width={450}
               required
               id="category"
               name="category"
@@ -212,7 +212,7 @@ export default function () {
             <ProFormSelect
               mode="tags"
               tokenSeparators={[',']}
-              width="lg"
+              width={450}
               name="tags"
               label="标签"
               placeholder="请选择或输入标签"
