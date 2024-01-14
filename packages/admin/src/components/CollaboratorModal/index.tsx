@@ -81,7 +81,7 @@ export default ({ onFinish, id, trigger, initialValues }) => (
     // wrapperCol: { span: 14 },
   >
     <ProFormText
-      width="md"
+      width="lg"
       required
       id="name"
       name="name"
@@ -91,7 +91,7 @@ export default ({ onFinish, id, trigger, initialValues }) => (
       rules={[{ required: true, message: '这是必填项' }]}
     />
     <ProFormText
-      width="md"
+      width="lg"
       required
       id="nickname"
       name="nickname"
@@ -101,7 +101,7 @@ export default ({ onFinish, id, trigger, initialValues }) => (
       rules={[{ required: true, message: '这是必填项' }]}
     />
     <ProFormText.Password
-      width="md"
+      width="lg"
       required
       id="password"
       name="password"
@@ -111,7 +111,7 @@ export default ({ onFinish, id, trigger, initialValues }) => (
       rules={[{ required: true, message: '这是必填项' }]}
     />
     <ProFormSelect
-      width="md"
+      width="lg"
       required
       rules={[{ required: true, message: '这是必填项' }]}
       name="permissions"

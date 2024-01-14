@@ -181,17 +181,17 @@ export default function () {
         title: (
           <Form layout="inline" form={form}>
             <ProFormText
-              width="md"
+              width="lg"
               required
               id="title"
               name="title"
-              label="文章标题"
+              label="文章标题1"
               placeholder="请输入标题"
               rules={[{ required: true, message: '这是必填项' }]}
             />
 
             <ProFormSelect
-              width="md"
+              width="lg"
               required
               id="category"
               name="category"
@@ -212,7 +212,7 @@ export default function () {
             <ProFormSelect
               mode="tags"
               tokenSeparators={[',']}
-              width="md"
+              width="lg"
               name="tags"
               label="标签"
               placeholder="请选择或输入标签"

@@ -38,7 +38,7 @@ export default function (props) {
         labelCol={{ span: 6 }}
       >
         <ProFormSelect
-          width="md"
+          width="lg"
           name="private"
           id="private"
           label="是否加密"
@@ -58,7 +58,7 @@ export default function (props) {
         />
         <ProFormText
           label="置顶优先级"
-          width="md"
+          width="lg"
           id="top"
           name="Ctop"
           placeholder="留空或0表示不置顶，其余数字越大表示优先级越高"
@@ -68,7 +68,7 @@ export default function (props) {
           }}
         />
         <ProFormText
-          width="md"
+          width="lg"
           id="pathname"
           name="pathname"
           label="自定义路径名"
@@ -77,7 +77,7 @@ export default function (props) {
         />
         <ProFormText.Password
           label="密码"
-          width="md"
+          width="lg"
           autocomplete="new-password"
           id="password"
           name="pc"
@@ -88,7 +88,7 @@ export default function (props) {
           }}
         />
         <ProFormSelect
-          width="md"
+          width="lg"
           name="hidden"
           id="hidden"
           label="是否隐藏"
@@ -107,7 +107,7 @@ export default function (props) {
           }}
         />
         <ProFormText
-          width="md"
+          width="lg"
           id="copyright"
           name="copyright"
           label="版权声明"

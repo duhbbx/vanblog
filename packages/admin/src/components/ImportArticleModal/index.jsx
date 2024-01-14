@@ -69,7 +69,7 @@ export default function (props) {
         // wrapperCol: { span: 14 },
       >
         <ProFormText
-          width="md"
+          width="lg"
           required
           id="title"
           name="title"
@@ -78,7 +78,7 @@ export default function (props) {
           rules={[{ required: true, message: '这是必填项' }]}
         />
         <ProFormText
-          width="md"
+          width="lg"
           id="top"
           name="top"
           label="置顶优先级"
@@ -87,7 +87,7 @@ export default function (props) {
         <ProFormSelect
           mode="tags"
           tokenSeparators={[',']}
-          width="md"
+          width="lg"
           name="tags"
           label="标签"
           placeholder="请选择或输入标签"
@@ -97,7 +97,7 @@ export default function (props) {
           }}
         />
         <ProFormSelect
-          width="md"
+          width="lg"
           required
           id="category"
           name="category"
@@ -119,13 +119,13 @@ export default function (props) {
           showTime={{
             defaultValue: moment('00:00:00', 'HH:mm:ss'),
           }}
-          width="md"
+          width="lg"
           name="createdAt"
           id="createdAt"
           label="创建时间"
         />
         <ProFormSelect
-          width="md"
+          width="lg"
           name="private"
           id="private"
           label="是否加密"
@@ -145,7 +145,7 @@ export default function (props) {
         />
         <ProFormText.Password
           label="密码"
-          width="md"
+          width="lg"
           id="password"
           name="password"
           autocomplete="new-password"
@@ -153,7 +153,7 @@ export default function (props) {
           dependencies={['private']}
         />
         <ProFormSelect
-          width="md"
+          width="lg"
           name="hidden"
           id="hidden"
           label="是否隐藏"

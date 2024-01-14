@@ -3,7 +3,7 @@ import { getAllCollaboratorsList } from '@/services/van-blog/api';
 
 export default () => (
   <ProFormSelect
-    width="md"
+    width="lg"
     id="author"
     name="author"
     label="作者"

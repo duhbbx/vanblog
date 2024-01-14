@@ -26,7 +26,7 @@ export default function (props: { setValue: any; value: any; trigger: any }) {
       ></Alert>
 
       <ProFormSelect
-        width="md"
+        width="lg"
         required
         id="afterSave"
         name="afterSave"
@@ -47,7 +47,7 @@ export default function (props: { setValue: any; value: any; trigger: any }) {
       />
 
       <ProFormSelect
-        width="md"
+        width="lg"
         required
         id="useLocalCache"
         name="useLocalCache"
