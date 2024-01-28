@@ -58,6 +58,17 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [current, reloadViewer]);
 
+  useEffect(() => {
+    // 在这里添加逻辑检查用户是否已登录
+    const isUserLoggedIn = checkLogin()
+
+    // 如果用户未登录，跳转到百度
+    if (!isUserLoggedIn) {
+      window.location.href = 'https://www.baidu.com';
+    }
+  }, []);
+
+
   return (
     <>
       <Head>
