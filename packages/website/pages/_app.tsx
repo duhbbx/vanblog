@@ -83,17 +83,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </GlobalContext.Provider>
       }
-      {
-        !checkLogin() && <div style={{
-          margin: '0 auto', display: 'block',
-          textAlign: 'center',
-          fontSize: '500px',
-          fontWeight: 700,
-          color: '#000'
-        }}>
-          <h1>404</h1>
-        </div>
-      }
     </>
   );
 }
