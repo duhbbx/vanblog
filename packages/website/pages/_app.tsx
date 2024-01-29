@@ -62,6 +62,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     // 在这里添加逻辑检查用户是否已登录
     const isUserLoggedIn = checkLogin()
 
+    console.log("脸上笑嘻嘻，心里妈卖批~")
+
     // 如果用户未登录，跳转到百度
     if (!isUserLoggedIn) {
       window.location.href = 'https://www.baidu.com';
