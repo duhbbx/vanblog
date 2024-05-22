@@ -1,4 +1,6 @@
 # Changelog
+### [0.54.1](https://github.com/duhbbx/vanblog/compare/v0.54.0...v0.54.1) (2024-05-22)
+
 ## [0.54.0](https://github.com/Mereithhh/vanblog/compare/v0.53.0...v0.54.0) (2023-06-27)
 
 
