@@ -1,41 +1,9 @@
 import Editor from '@/components/Editor';
-import EditorProfileModal from '@/components/EditorProfileModal';
-import PublishDraftModal from '@/components/PublishDraftModal';
-import Tags from '@/components/Tags';
-import UpdateModal from '@/components/UpdateModal';
-import { SaveTip } from "@/components/SaveTip";
-import {
-  deleteArticle,
-  deleteDraft,
-  getAbout,
-  getArticleById,
-  getDraftById,
-  updateAbout,
-  updateArticle,
-  createArticle,
-  getAllCategories,
-  getTags,
-  updateDraft,
-} from '@/services/van-blog/api';
-import { getPathname } from '@/services/van-blog/getPathname';
-import { parseMarkdownFile, parseObjToMarkdown } from '@/services/van-blog/parseMarkdownFile';
-import { useCacheState } from '@/services/van-blog/useCacheState';
-import { DownOutlined } from '@ant-design/icons';
-import { PageContainer } from '@ant-design/pro-layout';
-import { Button, Dropdown, Input, Menu, message, Modal, Space, Tag, Upload } from 'antd';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { history } from 'umi';
-import moment from 'moment';
-
-import { Form } from 'antd';
-
-import {
-  ModalForm,
-  ProFormDateTimePicker,
-  ProFormSelect,
-  ProFormText,
-  ProForm
-} from '@ant-design/pro-components';
+import {createArticle, getArticleById, updateArticle,} from '@/services/van-blog/api';
+import {getPathname} from '@/services/van-blog/getPathname';
+import {message, Upload} from 'antd';
+import {useCallback, useEffect, useState} from 'react';
+import {history} from 'umi';
 
 
 export default function () {
@@ -43,14 +11,6 @@ export default function () {
   const [currObj, setCurrObj] = useState({});
   const [loading, setLoading] = useState(true);
   const type = history.location.query?.type || 'article';
-
-
-  const [form] = Form.useForm();
-
-
-  useEffect(() => {
-    if (form && form.setFieldsValue) form.setFieldsValue(currObj);
-  }, [currObj]);
 
 
   useEffect(() => {
@@ -61,16 +21,32 @@ export default function () {
   }, [currObj, value, type]);
   const onKeyDown = (ev) => {
     let save = false;
-    if (ev.metaKey == true && ev.key.toLocaleLowerCase() == 's') {
-      save = true;
+    const SAVE = 1;
+    const VIEW = 2;
+    let op = 0;
+    if (ev.metaKey === true && ev.key.toLocaleLowerCase() === 's') {
+      op = SAVE;
     }
-    if (ev.ctrlKey == true && ev.key.toLocaleLowerCase() == 's') {
-      save = true;
+    if (ev.ctrlKey === true && ev.key.toLocaleLowerCase() === 's') {
+      op = SAVE;
     }
-    if (save) {
+
+    if (ev.metaKey === true && ev.key.toLocaleLowerCase() === 'd') {
+      op = VIEW;
+    }
+    if (ev.ctrlKey === true && ev.key.toLocaleLowerCase() === 'd') {
+      op = VIEW;
+    }
+
+
+    if (op === SAVE) {
       event?.preventDefault();
       ev?.preventDefault();
       handleSave();
+    } else if (op === VIEW) {
+      event?.preventDefault();
+      ev?.preventDefault();
+      viewArticle();
     }
     return false;
   };
@@ -88,8 +64,8 @@ export default function () {
       const id = history.location.query?.id;
 
 
-      if (type == 'article' && id) {
-        const { data } = await getArticleById(id);
+      if (type === 'article' && id) {
+        const {data} = await getArticleById(id);
         setValue(data?.content || '');
         document.title = `${data?.title || ''} - VanBlog 编辑器`;
         setCurrObj(data);
@@ -102,8 +78,6 @@ export default function () {
         setValue(data?.content || '');
         setCurrObj(data);
       }
-
-      form.setFieldsValue(currObj)
 
       setLoading(false);
     },
@@ -122,18 +96,42 @@ export default function () {
     }
   }, []);
 
+  const getTitle = () => {
+
+    // 按行分割
+    const lines = value.split('\n');
+
+    // 查找第一个以 # 开头的标题
+    for (let line of lines) {
+      line = line.trim();
+      if (line.startsWith('#')) {
+        // 去掉前缀的 #
+        let title = line.replace(/^#+\s*/, '');
+
+        // 如果内容为空，返回 "无标题"
+        if (!title) {
+          return "无标题";
+        }
+
+        // 截取最多 20 个字符
+        if (title.length > 20) {
+          title = title.slice(0, 20);
+        }
+        return title;
+      }
+    }
+
+    // 如果没有找到任何标题，返回 "无标题"
+    return "无标题";
+  }
+
   const saveFn = async () => {
 
-
-    console.log("xxxx");
-
-    const data = form.getFieldsValue()
-
+    const data = {}
     data.content = value;
-
-    const v = value;
+    data.title = getTitle();
     setLoading(true);
-    if (type == 'article') {
+    if (type === 'article') {
 
       if (history.location.query.id) {
         await updateArticle(currObj?.id, data);
@@ -145,17 +143,17 @@ export default function () {
         // data.id = results.data.id
 
 
-        const { location } = history;
-        const { search } = location;
-        if(search === ''){
+        const {location} = history;
+        const {search} = location;
+        if (search === '') {
           history.push({
             pathname: location.pathname,
             search: 'id=' + results.data.id
           });
-        }else{
+        } else {
           history.push({
             pathname: location.pathname,
-            search: search +  '&id=' + results.data.id
+            search: search + '&id=' + results.data.id
           });
         }
 
@@ -170,91 +168,28 @@ export default function () {
   };
 
   const handleSave = async () => {
-    saveFn()
+    await saveFn()
+  };
+
+  const viewArticle = () => {
+    if (history.location.query?.id) {
+      window.open(`/post/${getPathname(currObj)}`, '_blank');
+    } else {
+      alert("还未保存呢");
+    }
   };
 
   return (
-    <PageContainer
-      className="editor-full"
-      style={{ overflow: 'hidden' }}
-      header={{
-        title: (
-          <Form layout="inline" form={form}>
-            <ProFormText
-              width={450}
-              required
-              id="title"
-              name="title"
-              label="文章标题1"
-              placeholder="请输入标题"
-              rules={[{ required: true, message: '这是必填项' }]}
-            />
-
-            <ProFormSelect
-              width={450}
-              required
-              id="category"
-              name="category"
-              tooltip="首次使用请先在站点管理-数据管理-分类管理中添加分类"
-              label="分类"
-              placeholder="请选择分类"
-              rules={[{ required: true, message: '这是必填项' }]}
-              request={async () => {
-                const { data: categories } = await getAllCategories();
-                return categories?.map((e) => {
-                  return {
-                    label: e,
-                    value: e,
-                  };
-                });
-              }}
-            />
-            <ProFormSelect
-              mode="tags"
-              tokenSeparators={[',']}
-              width={450}
-              name="tags"
-              label="标签"
-              placeholder="请选择或输入标签"
-              request={async () => {
-                const msg = await getTags();
-                return msg?.data?.map((item) => ({ label: item, value: item })) || [];
-              }}
-            />
-          </Form>
-        ),
-        extra: [
-          <Button key="extraSaveBtn" type="primary" onClick={handleSave}>
-            {<SaveTip />}
-          </Button>,
-
-
-          <Button
-            key="backBtn"
-            onClick={() => {
-              if (history.location.query?.id) {
-                window.open(`/post/${getPathname(currObj)}`, '_blank');
-              } else {
-                alert("还未保存呢");
-              }
-            }}
-          >
-            查看
-          </Button>
-        ],
-        breadcrumb: {},
-      }}
-      footer={null}
-    >
-      <div style={{ height: '100%' }}>
-        <div style={{ height: '0' }}>
+    <div className="editor-full" style={{overflow: 'hidden'}}>
+      <div style={{height: '100%'}}>
+        <div style={{height: '0'}}>
           <Upload
             showUploadList={false}
             multiple={false}
             accept={'.md'}
-            style={{ display: 'none', height: 0 }}
+            style={{display: 'none', height: 0}}
           >
-            <a key="importBtn" type="link" style={{ display: 'none' }} id="importBtn">
+            <a key="importBtn" type="link" style={{display: 'none'}} id="importBtn">
               导入内容
             </a>
           </Upload>
@@ -268,6 +203,6 @@ export default function () {
           }}
         />
       </div>
-    </PageContainer>
+    </div>
   );
 }

@@ -18,7 +18,7 @@ export const columns = [
   {
     title: '标题',
     dataIndex: 'title',
-    width: 150,
+    width: 400,
     copyable: true,
     ellipsis: true,
     editable: true,
@@ -29,52 +29,6 @@ export const columns = [
           message: '此项为必填项',
         },
       ],
-    },
-  },
-  {
-    title: '分类',
-    dataIndex: 'category',
-    valueType: 'select',
-    width: 100,
-    editable: true,
-    request: async () => {
-      const { data: categories } = await getAllCategories();
-      const data = categories.map((each) => ({
-        label: each,
-        value: each,
-      }));
-      return data;
-    },
-  },
-  {
-    title: '标签',
-    dataIndex: 'tags',
-    valueType: 'select',
-    fieldProps: { showSearch: true, placeholder: '请搜索或选择' },
-    width: 120,
-    search: true,
-    editable: true,
-    renderFormItem: (_, { defaultRender }) => {
-      return defaultRender(_);
-    },
-    request: async () => {
-      const { data: tags } = await getTags();
-      const data = tags.map((each) => ({
-        label: each,
-        value: each,
-      }));
-      return data;
-    },
-    render: (val, record) => {
-      if (!record?.tags?.length) {
-        return '-';
-      } else {
-        return record?.tags?.map((each) => (
-          <Tag style={{ marginBottom: 4 }} key={`tag-${each}`}>
-            {each}
-          </Tag>
-        ));
-      }
     },
   },
   {
