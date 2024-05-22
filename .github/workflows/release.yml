@@ -33,7 +33,7 @@ jobs:
       - name: Login to AliyunCS
         uses: docker/login-action@v1
         with:
-          registry: registry.cn-beijing.aliyuncs.com
+          registry: registry.cn-shanghai.aliyuncs.com
           username: ${{ secrets.ALI_USER  }}
           password: ${{ secrets.ALI_PASSWORD  }}
       # "registry.cn-beijing.aliyuncs.com/mereith/van-blog:latest"
