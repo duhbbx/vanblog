@@ -1,4 +1,34 @@
 # Changelog
+### [0.54.4](https://github.com/duhbbx/vanblog/compare/v0.54.3...v0.54.4) (2024-05-23)
+
+
+### ✨ Features | 新功能
+
+* 前台标签页增加按照字母顺序排序 ([#327](https://github.com/duhbbx/vanblog/issues/327)) ([28be24b](https://github.com/duhbbx/vanblog/commit/28be24bbd61ada06b16f2dc10a2d19380e9f570e))
+
+
+### 🐛 Bug Fixes | Bug 修复
+
+* 一件更新脚本失效 [#334](https://github.com/duhbbx/vanblog/issues/334) [#330](https://github.com/duhbbx/vanblog/issues/330) ([c651c92](https://github.com/duhbbx/vanblog/commit/c651c928332cb014cbe4655c4665695627aebf1c))
+
+
+### 🚀 Chore | 构建/工程依赖/工具
+
+* docker 安装脚本缓存一份，防止无法加载 ([f300cad](https://github.com/duhbbx/vanblog/commit/f300cadf864e39ad94d7f01f11f72f8a15d82977))
+* script -> v0.3.1 ([aeeef47](https://github.com/duhbbx/vanblog/commit/aeeef47130b0fe9eb911e4803cb05a31f7b298b1))
+* 一键脚本使用 docker compose 代替 docker-compose ([472aeda](https://github.com/duhbbx/vanblog/commit/472aedab07d097dd3ec03a5c5ff1e31287dda0a1))
+
+
+### ✏️ Documentation | 文档
+
+* 文档中补充阿里云镜像源地址 ([5babb70](https://github.com/duhbbx/vanblog/commit/5babb70a187ac261c9ab9947dd231b4556d057e8))
+* 更新文档 ([a77f4d6](https://github.com/duhbbx/vanblog/commit/a77f4d6981688772de36bd22de385bc6f573cfbb))
+* 更新文档 ([1d94964](https://github.com/duhbbx/vanblog/commit/1d949643569c8c4f7e700021fc224207d8c2acc6))
+* 更新文档 ([392b2bd](https://github.com/duhbbx/vanblog/commit/392b2bdca765b4436946de53ad2e719cee061bdd))
+* 更新文档 ([dc64fe9](https://github.com/duhbbx/vanblog/commit/dc64fe9634bd39308dfdaf62484124ed1f3f6ac2))
+* 更新文档 ([20ca4cf](https://github.com/duhbbx/vanblog/commit/20ca4cf515f75d482a36346f63eb311bb104b74c))
+* 更新谁在使用 [#323](https://github.com/duhbbx/vanblog/issues/323) ([c6ab6e3](https://github.com/duhbbx/vanblog/commit/c6ab6e366f719e44fee3ce569da942102543cd36))
+
 ### [0.54.3](https://github.com/duhbbx/vanblog/compare/v0.54.2...v0.54.3) (2024-05-22)
 
 ### [0.54.2](https://github.com/duhbbx/vanblog/compare/v0.54.1...v0.54.2) (2024-05-22)
