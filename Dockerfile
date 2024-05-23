@@ -5,7 +5,7 @@ ENV NODE_OPTIONS='--max_old_space_size=4096 --openssl-legacy-provider'
 ENV EEE=production
 WORKDIR /app
 USER root
-RUN apk update && apk add --no-cache python3 python3-distutils make g++ && rm -rf /var/cache/apk/*
+RUN apk update && apk add --no-cache python3 make g++ && rm -rf /var/cache/apk/*
 COPY ./packages/admin/ ./
 
 RUN npm install --global pnpm
@@ -32,7 +32,7 @@ RUN pnpm build
 
 FROM node:18-alpine AS WEBSITE_BUILDER
 WORKDIR /app
-RUN apk update && apk add --no-cache python3 python3-distutils make g++ && rm -rf /var/cache/apk/*
+RUN apk update && apk add --no-cache python3 make g++ && rm -rf /var/cache/apk/*
 COPY ./package.json ./
 COPY ./pnpm-lock.yaml ./
 COPY ./pnpm-workspace.yaml ./
