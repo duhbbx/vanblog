@@ -7,11 +7,12 @@ import Toc from "../../components/Toc";
 import { Article } from "../../types/article";
 import { getArticlePath } from "../../utils/getArticlePath";
 import { LayoutProps } from "../../utils/getLayoutProps";
-import { getPostPagesProps } from "../../utils/getPageProps";
+import {getPagePagesProps, getPostPagesProps} from "../../utils/getPageProps";
 import { hasToc } from "../../utils/hasToc";
 import { getArticlesKeyWord } from "../../utils/keywords";
 import { revalidate } from "../../utils/loadConfig";
 import Custom404 from "../404";
+import {PagePagesProps} from "../page/[p]";
 
 export interface PostPagesProps {
   layoutProps: LayoutProps;
@@ -94,27 +95,44 @@ const PostPages = (props: PostPagesProps) => {
 export default PostPages;
 
 export async function getStaticPaths() {
-  const data = await getArticlesByOption({
-    page: 1,
-    pageSize: -1,
-    toListView: true,
-  });
-  const paths = data.articles.map((article) => ({
-    params: {
-      id: String(getArticlePath(article)),
-    },
-  }));
-  return {
-    paths,
-    fallback: "blocking",
-  };
+  try {
+    const data = await getArticlesByOption({
+      page: 1,
+      pageSize: -1,
+      toListView: true,
+    });
+    const paths = data.articles.map((article) => ({
+      params: {
+        id: String(getArticlePath(article)),
+      },
+    }));
+    return {
+      paths,
+      fallback: "blocking",
+    };
+  } catch (error) {
+    return {
+      paths: [],
+      fallback: 'blocking',
+    };
+  }
 }
 
 export async function getStaticProps({
   params,
 }: any): Promise<{ props: PostPagesProps; revalidate?: number }> {
+
+  let props: PostPagesProps;
+
+  try {
+    props = await getPostPagesProps(params.id);
+  } catch (error) {
+    console.error('Error fetching about page data:', error);
+    // 提供默认数据以避免构建失败
+    props = {} as PostPagesProps;
+  }
   return {
-    props: await getPostPagesProps(params.id),
+    props: props,
     ...revalidate,
   };
 }

@@ -3,9 +3,10 @@ import AuthorCard, { AuthorCardProps } from "../components/AuthorCard";
 import Layout from "../components/Layout";
 import { encodeQuerystring } from "../utils/encode";
 import { LayoutProps } from "../utils/getLayoutProps";
-import { getTagPageProps } from "../utils/getPageProps";
+import {getCategoryPagesProps, getTagPageProps} from "../utils/getPageProps";
 import { revalidate } from "../utils/loadConfig";
 import { getTarget } from "../components/Link/tools";
+import {CategoryPagesProps} from "./category/[category]";
 
 export interface TagPageProps {
   layoutProps: LayoutProps;
@@ -49,8 +50,19 @@ export async function getStaticProps(): Promise<{
   props: TagPageProps;
   revalidate?: number;
 }> {
+
+  let props: TagPageProps;
+
+  try {
+    props = await getTagPageProps();
+  } catch (error) {
+    console.error('Error fetching about page data:', error);
+    // 提供默认数据以避免构建失败
+    props = {} as TagPageProps;
+  }
+
   return {
-    props: await getTagPageProps(),
+    props: props,
     ...revalidate,
   };
 }

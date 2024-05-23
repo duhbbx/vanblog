@@ -3,8 +3,9 @@ import Layout from "../components/Layout";
 import TimeLineItem from "../components/TimeLineItem";
 import { Article } from "../types/article";
 import { LayoutProps } from "../utils/getLayoutProps";
-import { getTimeLinePageProps } from "../utils/getPageProps";
+import {getPostPagesProps, getTimeLinePageProps} from "../utils/getPageProps";
 import { revalidate } from "../utils/loadConfig";
+import {PostPagesProps} from "./post/[id]";
 export interface TimeLinePageProps {
   layoutProps: LayoutProps;
   authorCardProps: AuthorCardProps;
@@ -52,8 +53,17 @@ export async function getStaticProps(): Promise<{
   props: TimeLinePageProps;
   revalidate?: number;
 }> {
+  let props: TimeLinePageProps;
+
+  try {
+    props = await getTimeLinePageProps();
+  } catch (error) {
+    console.error('Error fetching about page data:', error);
+    // 提供默认数据以避免构建失败
+    props = {} as TimeLinePageProps;
+  }
   return {
-    props: await getTimeLinePageProps(),
+    props: props,
     ...revalidate,
   };
 }

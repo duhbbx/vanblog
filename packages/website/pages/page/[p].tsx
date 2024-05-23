@@ -8,10 +8,11 @@ import Waline from "../../components/WaLine";
 import { Article } from "../../types/article";
 import { getArticlePath } from "../../utils/getArticlePath";
 import { LayoutProps } from "../../utils/getLayoutProps";
-import { getPagePagesProps } from "../../utils/getPageProps";
+import {getIndexPageProps, getPagePagesProps} from "../../utils/getPageProps";
 import { getArticlesKeyWord } from "../../utils/keywords";
 import { revalidate } from "../../utils/loadConfig";
 import Custom404 from "../404";
+import {IndexPageProps} from "../index";
 export interface PagePagesProps {
   layoutProps: LayoutProps;
   authorCardProps: AuthorCardProps;
@@ -37,7 +38,7 @@ const PagePages = (props: PagePagesProps) => {
       <div className="space-y-2 md:space-y-4">
         {props.articles.map((article) => (
           <PostCard
-          
+
             showEditButton={props.layoutProps.showEditButton === "true"}
             setContent={() => {}}
             showExpirationReminder={
@@ -76,27 +77,44 @@ const PagePages = (props: PagePagesProps) => {
 export default PagePages;
 
 export async function getStaticPaths() {
-  const data = await getPublicMeta();
-  const total = Math.ceil(data.totalArticles / 5);
-  const paths = [];
-  for (let i = 1; i <= total; i++) {
-    paths.push({
-      params: {
-        p: String(i),
-      },
-    });
+  try {
+    const data = await getPublicMeta();
+    const total = Math.ceil(data.totalArticles / 5);
+    const paths = [];
+    for (let i = 1; i <= total; i++) {
+      paths.push({
+        params: {
+          p: String(i),
+        },
+      });
+    }
+    return {
+      paths,
+      fallback: "blocking",
+    };
+  } catch(error) {
+    return {
+      paths: [],
+      fallback: 'blocking',
+    };
   }
-  return {
-    paths,
-    fallback: "blocking",
-  };
 }
 
 export async function getStaticProps({
   params,
 }: any): Promise<{ props: PagePagesProps; revalidate?: number }> {
+
+  let props: PagePagesProps;
+
+  try {
+    props = await getPagePagesProps(params.p);
+  } catch (error) {
+    console.error('Error fetching about page data:', error);
+    // 提供默认数据以避免构建失败
+    props = {} as PagePagesProps;
+  }
   return {
-    props: await getPagePagesProps(params.p),
+    props: props,
     ...revalidate,
   };
 }

@@ -2,9 +2,9 @@
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
-const isDev = process.env.NODE_ENV == "development";
-const rewites =
-  process.env.NODE_ENV == "development"
+const isDev = process.env.NODE_ENV === "development";
+const rewrites =
+  process.env.NODE_ENV === "development"
     ? {
         async rewrites() {
           return [
@@ -23,9 +23,8 @@ const rewites =
 
 const getAllowDomains = () => {
   const domainsInEnv = process.env.VAN_BLOG_ALLOW_DOMAINS || "";
-  if (domainsInEnv && domainsInEnv != "") {
-    const arr = domainsInEnv.split(",");
-    return arr;
+  if (domainsInEnv && domainsInEnv !== "") {
+    return domainsInEnv.split(",");
   } else {
     if (isDev) {
       return ["pic.mereith.com",'localhost','127.0.0.1'];
@@ -38,7 +37,7 @@ const getCdnUrl = () => {
     return {};
   }
   const UrlInEnv = process.env.VAN_BLOG_CDN_URL || "";
-  if (UrlInEnv && UrlInEnv != "") {
+  if (UrlInEnv && UrlInEnv !== "") {
     return { assetPrefix: UrlInEnv };
   } else {
     return {};
@@ -54,5 +53,5 @@ module.exports = withBundleAnalyzer({
     domains: getAllowDomains(),
   },
   ...getCdnUrl(),
-  ...rewites,
+  ...rewrites,
 });

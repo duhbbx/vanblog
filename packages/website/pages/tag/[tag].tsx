@@ -4,9 +4,10 @@ import Layout from "../../components/Layout";
 import TimeLineItem from "../../components/TimeLineItem";
 import { Article } from "../../types/article";
 import { LayoutProps } from "../../utils/getLayoutProps";
-import { getTagPagesProps } from "../../utils/getPageProps";
+import {getAboutPageProps, getTagPagesProps} from "../../utils/getPageProps";
 import { revalidate } from "../../utils/loadConfig";
 import Custom404 from "../404";
+import {AboutPageProps} from "../about";
 export interface TagPagesProps {
   layoutProps: LayoutProps;
   authorCardProps: AuthorCardProps;
@@ -55,23 +56,43 @@ const TagPages = (props: TagPagesProps) => {
 };
 
 export default TagPages;
+
 export async function getStaticPaths() {
-  const data = await getPublicMeta();
-  const paths = data.tags.map((tag) => ({
-    params: {
-      tag: tag,
-    },
-  }));
-  return {
-    paths,
-    fallback: "blocking",
-  };
+
+  try {
+    const data = await getPublicMeta();
+    const paths = data.tags.map((tag) => ({
+      params: {
+        tag: tag,
+      },
+    }));
+    return {
+      paths,
+      fallback: "blocking",
+    };
+  } catch (error) {
+    return {
+      paths: [],
+      fallback: 'blocking',
+    };
+  }
 }
 export async function getStaticProps({
   params,
 }: any): Promise<{ props: TagPagesProps; revalidate?: number }> {
+
+  let props: TagPagesProps;
+
+  try {
+    props = await getTagPagesProps(params.tag);
+  } catch (error) {
+    console.error('Error fetching about page data:', error);
+    // 提供默认数据以避免构建失败
+    props = {} as TagPagesProps;
+  }
+
   return {
-    props: await getTagPagesProps(params.tag),
+    props: props,
     ...revalidate,
   };
 }

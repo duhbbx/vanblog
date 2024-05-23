@@ -85,8 +85,19 @@ export async function getStaticProps(): Promise<{
   props: AboutPageProps;
   revalidate?: number;
 }> {
+
+  let props: AboutPageProps;
+
+  try {
+    props = await getAboutPageProps();
+  } catch (error) {
+    console.error('Error fetching about page data:', error);
+    // 提供默认数据以避免构建失败
+    props = {} as AboutPageProps;
+  }
+
   return {
-    props: await getAboutPageProps(),
+    props: props,
     ...revalidate,
   };
 }

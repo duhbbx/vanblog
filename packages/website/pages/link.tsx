@@ -6,8 +6,9 @@ import LinkCard from "../components/LinkCard";
 import Markdown from "../components/Markdown";
 import WaLine from "../components/WaLine";
 import { LayoutProps } from "../utils/getLayoutProps";
-import { getLinkPageProps } from "../utils/getPageProps";
+import {getLinkPageProps, getTagPageProps} from "../utils/getPageProps";
 import { revalidate } from "../utils/loadConfig";
+import {TagPageProps} from "./tag";
 
 export interface LinkPageProps {
   layoutProps: LayoutProps;
@@ -84,8 +85,19 @@ export async function getStaticProps(): Promise<{
   props: LinkPageProps;
   revalidate?: number;
 }> {
+
+  let props: LinkPageProps;
+
+  try {
+    props = await getLinkPageProps();
+  } catch (error) {
+    console.error('Error fetching about page data:', error);
+    // 提供默认数据以避免构建失败
+    props = {} as LinkPageProps;
+  }
+
   return {
-    props: await getLinkPageProps(),
+    props: props,
     ...revalidate,
   };
 }

@@ -4,12 +4,13 @@ import PageNav from "../components/PageNav";
 import PostCard from "../components/PostCard";
 import { Article } from "../types/article";
 import { LayoutProps } from "../utils/getLayoutProps";
-import { getIndexPageProps } from "../utils/getPageProps";
+import {getCategoryPageProps, getIndexPageProps} from "../utils/getPageProps";
 import { revalidate } from "../utils/loadConfig";
 import Waline from "../components/WaLine";
 import Head from "next/head";
 import { getArticlesKeyWord } from "../utils/keywords";
 import { getArticlePath } from "../utils/getArticlePath";
+import {CategoryPageProps} from "./category";
 export interface IndexPageProps {
   layoutProps: LayoutProps;
   authorCardProps: AuthorCardProps;
@@ -72,8 +73,18 @@ export async function getStaticProps(): Promise<{
   props: IndexPageProps;
   revalidate?: number;
 }> {
+
+  let props: IndexPageProps;
+
+  try {
+    props = await getIndexPageProps();
+  } catch (error) {
+    console.error('Error fetching about page data:', error);
+    // 提供默认数据以避免构建失败
+    props = {} as IndexPageProps;
+  }
   return {
-    props: await getIndexPageProps(),
+    props: props,
     ...revalidate,
   };
 }

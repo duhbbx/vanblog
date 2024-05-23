@@ -3,8 +3,9 @@ import Layout from "../components/Layout";
 import TimeLineItem from "../components/TimeLineItem";
 import { Article } from "../types/article";
 import { LayoutProps } from "../utils/getLayoutProps";
-import { getCategoryPageProps } from "../utils/getPageProps";
+import {getCategoryPageProps, getLinkPageProps} from "../utils/getPageProps";
 import { revalidate } from "../utils/loadConfig";
+import {LinkPageProps} from "./link";
 
 export interface CategoryPageProps {
   layoutProps: LayoutProps;
@@ -52,8 +53,19 @@ export async function getStaticProps(): Promise<{
   props: CategoryPageProps;
   revalidate?: number;
 }> {
+
+  let props: CategoryPageProps;
+
+  try {
+    props = await getCategoryPageProps();
+  } catch (error) {
+    console.error('Error fetching about page data:', error);
+    // 提供默认数据以避免构建失败
+    props = {} as CategoryPageProps;
+  }
+
   return {
-    props: await getCategoryPageProps(),
+    props: props,
     ...revalidate,
   };
 }

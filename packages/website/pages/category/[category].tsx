@@ -4,8 +4,9 @@ import Layout from "../../components/Layout";
 import TimeLineItem from "../../components/TimeLineItem";
 import { Article } from "../../types/article";
 import { LayoutProps } from "../../utils/getLayoutProps";
-import { getCategoryPagesProps } from "../../utils/getPageProps";
+import {getCategoryPagesProps, getTagPagesProps} from "../../utils/getPageProps";
 import { revalidate } from "../../utils/loadConfig";
+import {TagPagesProps} from "../tag/[tag]";
 export interface CategoryPagesProps {
   layoutProps: LayoutProps;
   authorCardProps: AuthorCardProps;
@@ -51,25 +52,44 @@ const CategoryPages = (props: CategoryPagesProps) => {
 };
 
 export default CategoryPages;
+
 export async function getStaticPaths() {
-  const data = await getPublicMeta();
+  try {
+    const data = await getPublicMeta();
 
-  const paths = data.meta.categories.map((category) => ({
-    params: {
-      category: category,
-    },
-  }));
+    const paths = data.meta.categories.map((category) => ({
+      params: {
+        category: category,
+      },
+    }));
 
-  return {
-    paths,
-    fallback: "blocking",
-  };
+    return {
+      paths,
+      fallback: "blocking",
+    };
+  } catch (error) {
+    return {
+      paths: [],
+      fallback: 'blocking',
+    };
+  }
 }
 export async function getStaticProps({
   params,
 }: any): Promise<{ props: CategoryPagesProps; revalidate?: number }> {
+  
+  let props: CategoryPagesProps;
+
+  try {
+    props = await getCategoryPagesProps(params.category);
+  } catch (error) {
+    console.error('Error fetching about page data:', error);
+    // 提供默认数据以避免构建失败
+    props = {} as CategoryPagesProps;
+  }
+
   return {
-    props: await getCategoryPagesProps(params.category),
+    props: props,
     ...revalidate,
   };
 }
