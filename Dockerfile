@@ -5,10 +5,10 @@ ENV NODE_OPTIONS='--max_old_space_size=4096 --openssl-legacy-provider'
 ENV EEE=production
 WORKDIR /app
 USER root
-RUN apk add --update python3 python3-distutils make g++ && rm -rf /var/cache/apk/*
+RUN apk update && apk add --no-cache python3 python3-distutils make g++ && rm -rf /var/cache/apk/*
 COPY ./packages/admin/ ./
 
-RUN npm install --global pnpm@7.27.1
+RUN npm install --global pnpm
 RUN pnpm config set network-timeout 600000 -g
 RUN pnpm config set registry https://registry.npmjs.org -g
 RUN pnpm config set fetch-retries 20 -g
@@ -22,7 +22,7 @@ ENV NODE_OPTIONS=--max_old_space_size=4096
 WORKDIR /app
 COPY ./packages/server/ .
 
-RUN npm install --global pnpm@7.27.1
+RUN npm install --global pnpm
 RUN pnpm config set network-timeout 600000 -g
 RUN pnpm config set registry https://registry.npmjs.org -g
 RUN pnpm config set fetch-retries 20 -g
@@ -32,7 +32,7 @@ RUN pnpm build
 
 FROM node:18-alpine AS WEBSITE_BUILDER
 WORKDIR /app
-RUN apk add --update python3 python3-distutils make g++ && rm -rf /var/cache/apk/*
+RUN apk update && apk add --no-cachepython3 python3-distutils make g++ && rm -rf /var/cache/apk/*
 COPY ./package.json ./
 COPY ./pnpm-lock.yaml ./
 COPY ./pnpm-workspace.yaml ./
@@ -45,7 +45,7 @@ ARG VAN_BLOG_BUILD_SERVER
 ENV VAN_BLOG_SERVER_URL ${VAN_BLOG_BUILD_SERVER}
 ARG VAN_BLOG_VERSIONS
 ENV VAN_BLOG_VERSION ${VAN_BLOG_VERSIONS}
-RUN npm install --global pnpm@7.27.1
+RUN npm install --global pnpm
 
 RUN pnpm config set network-timeout 600000 -g
 RUN pnpm config set registry https://registry.npmjs.org -g
@@ -62,7 +62,7 @@ RUN  apk add --no-cache --update tzdata caddy nss-tools libwebp-tools \
   && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
   && echo "Asia/Shanghai" > /etc/timezone \
   && apk del tzdata
-RUN npm install --global pnpm@7.27.1
+RUN npm install --global pnpm
 
 RUN pnpm config set network-timeout 30000 -g
 RUN pnpm config set registry https://registry.npmjs.org -g
