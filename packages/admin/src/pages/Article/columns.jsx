@@ -13,13 +13,15 @@ export const columns = [
     title: 'ID',
     width: 48,
     search: false,
+    editable: false,
   },
   {
     title: '标题',
     dataIndex: 'title',
-    width: 150,
+    width: 400,
     copyable: true,
     ellipsis: true,
+    editable: true,
     formItemProps: {
       rules: [
         {
@@ -30,50 +32,6 @@ export const columns = [
     },
   },
   {
-    title: '分类',
-    dataIndex: 'category',
-    valueType: 'select',
-    width: 100,
-    request: async () => {
-      const { data: categories } = await getAllCategories();
-      const data = categories.map((each) => ({
-        label: each,
-        value: each,
-      }));
-      return data;
-    },
-  },
-  {
-    title: '标签',
-    dataIndex: 'tags',
-    valueType: 'select',
-    fieldProps: { showSearch: true, placeholder: '请搜索或选择' },
-    width: 120,
-    search: true,
-    renderFormItem: (_, { defaultRender }) => {
-      return defaultRender(_);
-    },
-    request: async () => {
-      const { data: tags } = await getTags();
-      const data = tags.map((each) => ({
-        label: each,
-        value: each,
-      }));
-      return data;
-    },
-    render: (val, record) => {
-      if (!record?.tags?.length) {
-        return '-';
-      } else {
-        return record?.tags?.map((each) => (
-          <Tag style={{ marginBottom: 4 }} key={`tag-${each}`}>
-            {each}
-          </Tag>
-        ));
-      }
-    },
-  },
-  {
     title: '创建时间',
     key: 'showTime',
     dataIndex: 'createdAt',
@@ -81,25 +39,27 @@ export const columns = [
     sorter: true,
     hideInSearch: true,
     width: 150,
+    editable: true,
   },
-  {
-    title: '顶置',
-    key: 'top',
-    dataIndex: 'top',
-    valueType: 'number',
-    sorter: true,
-    width: 80,
-    hideInSearch: true,
-  },
-  {
-    title: '浏览量',
-    key: 'viewer',
-    dataIndex: 'viewer',
-    valueType: 'number',
-    sorter: true,
-    width: 80,
-    hideInSearch: true,
-  },
+  // {
+  //   title: '顶置',
+  //   key: 'top',
+  //   dataIndex: 'top',
+  //   valueType: 'number',
+  //   sorter: true,
+  //   width: 80,
+  //   hideInSearch: true,
+  // },
+  // {
+  //   title: '浏览量',
+  //   key: 'viewer',
+  //   dataIndex: 'viewer',
+  //   valueType: 'number',
+  //   sorter: true,
+  //   width: 80,
+  //   hideInSearch: true,
+  //   editable: false,
+  // },
   {
     title: '创建时间',
     dataIndex: 'createdAt',
@@ -124,16 +84,44 @@ export const columns = [
         <Space>
           <ColumnsToolBar
             outs={[
+
+              <a
+                key={'inline-edit' + record.id}
+                onClick={() => {
+                  action?.startEditable?.(record.id);
+                }}
+              >
+                行内编辑
+              </a>,
+
               <a
                 key={'editable' + record.id}
                 onClick={() => {
                   history.push(
-                    `/editor?type=${record?.about ? 'about' : 'article'}&id=${record.id}`,
+                    `/new-or-edit?type=${record?.about ? 'about' : 'article'}&id=${record.id}`,
                   );
                 }}
               >
                 编辑
               </a>,
+
+
+              <a
+                key={'deleteArticle' + record.id}
+                onClick={() => {
+                  Modal.confirm({
+                    title: `确定删除 "${record.title}"吗？`,
+                    onOk: async () => {
+                      await deleteArticle(record.id);
+                      message.success('删除成功!');
+                      action?.reload();
+                    },
+                  });
+                }}
+              >
+                删除
+              </a>,
+
               <a
                 href={`/post/${getPathname(record)}`}
                 onClick={(ev) => {
@@ -175,52 +163,56 @@ export const columns = [
                 查看
               </a>,
             ]}
-            nodes={[
-              <UpdateModal
-                currObj={record}
-                setLoading={() => {}}
-                type="article"
-                onFinish={() => {
-                  action?.reload();
-                }}
-              />,
-              <a
-                key={'exportArticle' + record.id}
-                onClick={async () => {
-                  const { data: obj } = await getArticleById(record.id);
-                  const md = parseObjToMarkdown(obj);
-                  const data = new Blob([md]);
-                  const url = URL.createObjectURL(data);
-                  const link = document.createElement('a');
-                  link.href = url;
-                  link.download = `${record.title}.md`;
-                  link.click();
-                }}
-              >
-                导出
-              </a>,
-              <a
-                key={'deleteArticle' + record.id}
-                onClick={() => {
-                  Modal.confirm({
-                    title: `确定删除 "${record.title}"吗？`,
-                    onOk: async () => {
-                      if (location.hostname == 'blog-demo.mereith.com') {
-                        if ([28, 29].includes(record.id)) {
-                          message.warn('演示站禁止删除此文章！');
-                          return false;
-                        }
+
+            nodes={[]}
+          /*
+          nodes={[
+            <UpdateModal
+              currObj={record}
+              setLoading={() => {}}
+              type="article"
+              onFinish={() => {
+                action?.reload();
+              }}
+            />,
+            <a
+              key={'exportArticle' + record.id}
+              onClick={async () => {
+                const { data: obj } = await getArticleById(record.id);
+                const md = parseObjToMarkdown(obj);
+                const data = new Blob([md]);
+                const url = URL.createObjectURL(data);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `${record.title}.md`;
+                link.click();
+              }}
+            >
+              导出
+            </a>,
+            <a
+              key={'deleteArticle' + record.id}
+              onClick={() => {
+                Modal.confirm({
+                  title: `确定删除 "${record.title}"吗？`,
+                  onOk: async () => {
+                    if (location.hostname == 'blog-demo.mereith.com') {
+                      if ([28, 29].includes(record.id)) {
+                        message.warn('演示站禁止删除此文章！');
+                        return false;
                       }
-                      await deleteArticle(record.id);
-                      message.success('删除成功!');
-                      action?.reload();
-                    },
-                  });
-                }}
-              >
-                删除
-              </a>,
-            ]}
+                    }
+                    await deleteArticle(record.id);
+                    message.success('删除成功!');
+                    action?.reload();
+                  },
+                });
+              }}
+            >
+              删除
+            </a>,
+          ]}
+          */
           />
         </Space>
       );

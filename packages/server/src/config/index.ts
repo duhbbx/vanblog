@@ -35,6 +35,6 @@ export const config: Config = {
   demo: loadConfig('demo', false),
   walineDB: loadConfig('waline.db', 'waline'),
   log: loadConfig('log', '/var/log'),
-  codeRunnerPath: loadConfig('codeRunner.path', '/app/codeRunner'),
-  pluginRunnerPath: loadConfig('pluginRunner.path', '/app/pluginRunner'),
+  codeRunnerPath: loadConfig('codeRunner.path', '~/vanblog-dev/codeRunner'),
+  pluginRunnerPath: loadConfig('pluginRunner.path', '~/vanblog-dev/pluginRunner'),
 };

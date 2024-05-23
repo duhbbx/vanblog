@@ -190,6 +190,7 @@ export default function () {
       return;
     }
     // 先检查一下有没有 more .
+    /*
     let hasMore = true;
     if (['article', 'draft'].includes(history.location.query?.type)) {
       if (!value?.includes('<!-- more -->')) {
@@ -225,6 +226,8 @@ export default function () {
       ),
       onOk: saveFn,
     });
+    */
+    saveFn()
   };
   const handleExport = async () => {
     const md = parseObjToMarkdown(currObj);

@@ -1,21 +1,29 @@
 import ImportArticleModal from '@/components/ImportArticleModal';
 import NewArticleModal from '@/components/NewArticleModal';
 import { getArticlesByOption } from '@/services/van-blog/api';
-import {batchExport,batchDelete} from "@/services/van-blog/batch";
+import { batchExport, batchDelete } from "@/services/van-blog/batch";
 import { useNum } from '@/services/van-blog/useNum';
-import { PageContainer, ProTable } from '@ant-design/pro-components';
+import { PageContainer, ProTable, EditableProTable } from '@ant-design/pro-components';
 import { Button, Space, message } from 'antd';
 import RcResizeObserver from 'rc-resize-observer';
 import { useMemo, useRef, useState } from 'react';
 import { history } from 'umi';
 import { articleObjAll, articleObjSmall, columns } from './columns';
 
+import React from 'react';
+
+import { updateArticle, createArticle } from '@/services/van-blog/api';
+
 export default () => {
+
+
+
+  // const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const actionRef = useRef();
   const [colKeys, setColKeys] = useState(articleObjAll);
   const [simplePage, setSimplePage] = useState(false);
   const [simpleSearch, setSimpleSearch] = useState(false);
-  const [pageSize, setPageSize] = useNum(10, 'article-page-size');
+  const [pageSize, setPageSize] = useNum(20, 'article-page-size');
   const searchSpan = useMemo(() => {
     if (!simpleSearch) {
       return 8;
@@ -46,10 +54,22 @@ export default () => {
           //  小屏幕的话把默认的 col keys 删掉一些
         }}
       >
-        <ProTable
+        <EditableProTable
           columns={columns}
           actionRef={actionRef}
           cardBordered
+
+          recordCreatorProps={
+            {
+              position: 'top',
+              record: () => ({
+                id: -1 * (Math.random() * 1000000).toFixed(0),
+                category: '未分类'
+              }),
+            }
+
+          }
+
           rowSelection={{
             fixed: true,
             preserveSelectedRowKeys: true,
@@ -137,7 +157,37 @@ export default () => {
               total: total,
             };
           }}
-          editable={false}
+          editable={{
+            type: 'multiple',
+            // editableKeys,
+            onSave: async (rowKey, data, row) => {
+              console.log(rowKey, data, row);
+
+              data.tags = Array.from(
+                new Set(
+                    data.tags?.split(",")
+                    .map(v => v.trim())
+                    .filter(v => !!v)
+                )
+            )
+
+              data.id = undefined
+              if (rowKey > 0) {
+                // 编辑
+                updateArticle(rowKey, data)
+              } else {
+                // 新增
+                const results = await createArticle(data)
+
+                console.log(results)
+                data.id = results.data.id
+              }
+
+              // data.id = rowKey
+
+            },
+            // onChange: setEditableRowKeys,
+          }}
           columnsState={{
             // persistenceKey: 'van-blog-article-table',
             // persistenceType: 'localStorage',
@@ -165,28 +215,35 @@ export default () => {
           headerTitle={simpleSearch ? undefined : '文章管理'}
           options={simpleSearch ? false : true}
           toolBarRender={() => [
+            // <Button
+            //   key="editAboutMe"
+            //   onClick={() => {
+            //     history.push(`/editor?type=about&id=${0}`);
+            //   }}
+            // >
+            //   {`编辑关于`}
+            // </Button>,
+
+
             <Button
-              key="editAboutMe"
+              key="backBtn"
+              type="primary"
               onClick={() => {
-                history.push(`/editor?type=about&id=${0}`);
+
+                window.open('/admin/new-or-edit?type=article', '_blank');
+
               }}
             >
-              {`编辑关于`}
+              新建
             </Button>,
-            <NewArticleModal
-              key="newArticle123"
-              onFinish={(data) => {
-                actionRef?.current?.reload();
-                history.push(`/editor?type=article&id=${data.id}`);
-              }}
-            />,
-            <ImportArticleModal
-              key="importArticleBtn"
-              onFinish={() => {
-                actionRef?.current?.reload();
-                message.success('导入成功！');
-              }}
-            />,
+
+            // <ImportArticleModal
+            //   key="importArticleBtn"
+            //   onFinish={() => {
+            //     actionRef?.current?.reload();
+            //     message.success('导入成功！');
+            //   }}
+            // />,
           ]}
         />
       </RcResizeObserver>

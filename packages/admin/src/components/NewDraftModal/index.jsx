@@ -38,7 +38,7 @@ export default function (props) {
       // wrapperCol: { span: 14 },
     >
       <ProFormText
-        width="md"
+        width="lg"
         required
         id="titleC"
         name="titleC"
@@ -50,7 +50,7 @@ export default function (props) {
       <ProFormSelect
         mode="tags"
         tokenSeparators={[',']}
-        width="md"
+        width="lg"
         name="tagsC"
         label="标签"
         placeholder="请选择或输入标签"
@@ -60,7 +60,7 @@ export default function (props) {
         }}
       />
       <ProFormSelect
-        width="md"
+        width="lg"
         required
         id="categoryC"
         name="categoryC"
@@ -79,7 +79,7 @@ export default function (props) {
         }}
       />
       <ProFormDateTimePicker
-        width="md"
+        width="lg"
         name="createdAtC"
         id="createdAtC"
         label="创建时间"

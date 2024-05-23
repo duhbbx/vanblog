@@ -66,7 +66,7 @@ export default ({
           message="具体内容请在创建后在列表中点击对应操作按钮进行修改"
         />
         <ProFormSelect
-          width="md"
+          width="lg"
           name="type"
           required
           tooltip="单文件页面可直接通过后台内置编辑器编辑内容，比较方便；多文件页面需要上传相关文件，适合复杂场景。"
@@ -84,7 +84,7 @@ export default ({
       </>
     )}
     <ProFormText
-      width="md"
+      width="lg"
       required
       id="name"
       name="name"
@@ -95,7 +95,7 @@ export default ({
     />
     <ProFormText
       disabled={initialValues && initialValues.type == "folder"}
-      width="md"
+      width="lg"
       required
       id="path"
       name="path"

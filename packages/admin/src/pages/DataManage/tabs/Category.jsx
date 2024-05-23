@@ -79,9 +79,9 @@ const columns = [
           return true;
         }}
       >
-        <ProFormText width="md" name="name" label="分类名" placeholder="请输入新的分类名称" />
+        <ProFormText width="lg" name="name" label="分类名" placeholder="请输入新的分类名称" />
         <ProFormSelect
-          width="md"
+          width="lg"
           name="private"
           label="是否加密"
           placeholder="是否加密"
@@ -93,7 +93,7 @@ const columns = [
           }}
         />
         <ProFormText.Password
-          width="md"
+          width="lg"
           name="password"
           label="密码"
           placeholder="请输入加密密码"
@@ -162,7 +162,7 @@ export default function () {
             labelCol={{ span: 6 }}
           >
             <ProFormText
-              width="md"
+              width="lg"
               required
               id="nameC"
               name="name"

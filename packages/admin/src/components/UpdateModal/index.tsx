@@ -62,7 +62,7 @@ export default function (props: {
       // wrapperCol: { span: 14 },
     >
       <ProFormText
-        width="md"
+        width="lg"
         required
         id="title"
         name="title"
@@ -74,7 +74,7 @@ export default function (props: {
       <ProFormSelect
         mode="tags"
         tokenSeparators={[',']}
-        width="md"
+        width="lg"
         name="tags"
         label="标签"
         placeholder="请选择或输入标签"
@@ -84,7 +84,7 @@ export default function (props: {
         }}
       />
       <ProFormSelect
-        width="md"
+        width="lg"
         required
         id="category"
         tooltip="首次使用请先在站点管理-数据管理-分类管理中添加分类"
@@ -103,7 +103,7 @@ export default function (props: {
         }}
       />
       <ProFormDateTimePicker
-        width="md"
+        width="lg"
         name="createdAt"
         id="createdAt"
         label="创建时间"
@@ -115,14 +115,14 @@ export default function (props: {
       {type == 'article' && (
         <>
           <ProFormText
-            width="md"
+            width="lg"
             id="top"
             name="top"
             label="置顶优先级"
             placeholder="留空或0表示不置顶，其余数字越大表示优先级越高"
           />
           <ProFormText
-            width="md"
+            width="lg"
             id="pathname"
             name="pathname"
             label="自定义路径名"
@@ -130,7 +130,7 @@ export default function (props: {
             placeholder="留空或为空则使用 id 作为路径名"
           />
           <ProFormSelect
-            width="md"
+            width="lg"
             name="private"
             id="private"
             label="是否加密"
@@ -150,14 +150,14 @@ export default function (props: {
           />
           <ProFormText.Password
             label="密码"
-            width="md"
+            width="lg"
             id="password"
             name="password"
             placeholder="请输入密码"
             dependencies={['private']}
           />
           <ProFormSelect
-            width="md"
+            width="lg"
             name="hidden"
             id="hidden"
             label="是否隐藏"
@@ -176,7 +176,7 @@ export default function (props: {
             }}
           />
           <ProFormText
-            width="md"
+            width="lg"
             id="copyright"
             name="copyright"
             label="版权声明"

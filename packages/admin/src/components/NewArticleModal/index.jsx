@@ -47,7 +47,7 @@ export default function (props) {
       // wrapperCol: { span: 14 },
     >
       <ProFormText
-        width="md"
+        width="lg"
         required
         id="titleC"
         name="titleC"
@@ -57,14 +57,14 @@ export default function (props) {
       />
       <AuthorField />
       <ProFormText
-        width="md"
+        width="lg"
         id="topC"
         name="topC"
         label="置顶优先级"
         placeholder="留空或0表示不置顶，其余数字越大表示优先级越高"
       />
       <ProFormText
-        width="md"
+        width="lg"
         id="pathnameC"
         name="pathnameC"
         label="自定义路径名"
@@ -74,7 +74,7 @@ export default function (props) {
       <ProFormSelect
         mode="tags"
         tokenSeparators={[',']}
-        width="md"
+        width="lg"
         name="tagsC"
         label="标签"
         placeholder="请选择或输入标签"
@@ -84,7 +84,7 @@ export default function (props) {
         }}
       />
       <ProFormSelect
-        width="md"
+        width="lg"
         required
         id="categoryC"
         name="categoryC"
@@ -107,14 +107,14 @@ export default function (props) {
         name="createdAtC"
         id="createdAtC"
         label="创建时间"
-        width="md"
+        width="lg"
         showTime={{
           defaultValue: moment('00:00:00', 'HH:mm:ss'),
         }}
       />
 
       <ProFormSelect
-        width="md"
+        width="lg"
         name="privateC"
         id="privateC"
         label="是否加密"
@@ -134,7 +134,7 @@ export default function (props) {
       />
       <ProFormText.Password
         label="密码"
-        width="md"
+        width="lg"
         id="passwordC"
         name="passwordC"
         autocomplete="new-password"
@@ -142,7 +142,7 @@ export default function (props) {
         dependencies={['private']}
       />
       <ProFormSelect
-        width="md"
+        width="lg"
         name="hiddenC"
         id="hiddenC"
         label="是否隐藏"
@@ -161,7 +161,7 @@ export default function (props) {
         }}
       />
       <ProFormText
-        width="md"
+        width="lg"
         id="copyrightC"
         name="copyrightC"
         label="版权声明"
