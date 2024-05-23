@@ -32,7 +32,7 @@ RUN pnpm build
 
 FROM node:18-alpine AS WEBSITE_BUILDER
 WORKDIR /app
-RUN apk update && apk add --no-cachepython3 python3-distutils make g++ && rm -rf /var/cache/apk/*
+RUN apk update && apk add --no-cache python3 python3-distutils make g++ && rm -rf /var/cache/apk/*
 COPY ./package.json ./
 COPY ./pnpm-lock.yaml ./
 COPY ./pnpm-workspace.yaml ./
