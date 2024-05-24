@@ -114,8 +114,8 @@ export default function () {
         }
 
         // 截取最多 20 个字符
-        if (title.length > 20) {
-          title = title.slice(0, 20);
+        if (title.length > 50) {
+          title = title.slice(0, 50);
         }
         return title;
       }
