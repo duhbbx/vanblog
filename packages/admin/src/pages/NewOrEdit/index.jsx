@@ -137,12 +137,7 @@ export default function () {
         await updateArticle(currObj?.id, data);
         await fetchData();
       } else {
-        const results = await createArticle(data)
-
-        console.log(results)
-        // data.id = results.data.id
-
-
+        const results = await createArticle(data);
         const {location} = history;
         const {search} = location;
         if (search === '') {
@@ -162,8 +157,6 @@ export default function () {
 
       message.success('保存成功！');
     }
-
-
     setLoading(false);
   };
 
