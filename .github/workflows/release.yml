@@ -47,14 +47,3 @@ jobs:
           tags: |
             "docker.io/duhbbx/vanblog:${{ steps.get_version.outputs.VERSION }}"
             "docker.io/duhbbx/vanblog:latest"
-      - name: 设置 Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm install --global pnpm
-      - name: generateReleaseNote
-        run: pnpm run release-note
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          body_path: CHANGE.md
