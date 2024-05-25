@@ -83,8 +83,9 @@ export default function () {
 
       if (type === 'article' && id) {
         const {data} = await getArticleById(id);
-        setValue(data?.content || '');
-        document.title = `${data?.title || ''} - VanBlog 编辑器`;
+        // setValue(data?.content || '');
+        document.title = `${data?.title || ''} - 编辑`;
+        addDefaultTitleIfMissing(data?.title, data?.content);
         setCurrObj(data);
       } else {
         document.title = '新文章';
@@ -92,7 +93,7 @@ export default function () {
           content: '',
           category: '未分类'
         }
-        setValue(data?.content || '');
+        addDefaultTitleIfMissing('无标题', '');
         setCurrObj(data);
       }
 
@@ -113,40 +114,52 @@ export default function () {
     }
   }, []);
 
-  const getTitle = () => {
+  const addDefaultTitleIfMissing = (title, content) => {
 
-    // 按行分割
-    const lines = value.split('\n');
-
-    // 查找第一个以 # 开头的标题
-    for (let line of lines) {
-      line = line.trim();
-      if (line.startsWith('#')) {
-        // 去掉前缀的 #
-        let title = line.replace(/^#+\s*/, '');
-
-        // 如果内容为空，返回 "无标题"
-        if (!title) {
-          return "无标题";
-        }
-
-        // 截取最多 20 个字符
-        if (title.length > 60) {
-          title = title.slice(0, 60);
-        }
-        return title;
-      }
+    if (title === null || title === undefined || title.trim() === '') {
+      title = "无标题";
     }
 
-    // 如果没有找到任何标题，返回 "无标题"
-    return "无标题";
+    // 检查内容是否为 null、undefined 或空字符串
+    if (content === null || content === undefined || content.trim() === '') {
+      setValue(`<!-- ${title} -->\n\n` + (content || ''))
+      return;
+    }
+
+    // 去掉内容开头的空白字符，然后匹配第一个 <!-- --> 之间的内容
+    const trimmedContent = content.trimStart();
+    const match = trimmedContent.match(/^<!--(.*?)-->/);
+
+    if (!match) {
+      setValue(`<!-- ${title} -->\n\n` + (content || ''))
+    }
+  }
+
+
+  const extractTitle = () => {
+    // 检查内容是否为 null、undefined 或空字符串
+    if (value === null || value === undefined || value.trim() === '') {
+      return '无标题';
+    }
+
+    // 去掉内容开头的空白字符，然后匹配第一个 <!-- --> 之间的内容
+    const trimmedContent = value.trimStart();
+    const match = trimmedContent.match(/^<!--(.*?)-->/);
+
+    // 如果匹配到符合的注释内容，则提取并返回注释中的内容，否则返回 "无标题"
+    if (match !== null) {
+      const title = match[1].trim();
+      return title !== '' ? title : '无标题';
+    } else {
+      return '无标题';
+    }
   }
 
   const saveFn = async () => {
 
     const data = {}
     data.content = value;
-    data.title = getTitle();
+    data.title = extractTitle();
     setLoading(true);
     if (type === 'article') {
 
