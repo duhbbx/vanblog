@@ -7,10 +7,27 @@ import {history} from 'umi';
 
 
 export default function () {
+  const [modifyButNotSave, setModifyButNotSave] = useState(false);
   const [value, setValue] = useState('');
   const [currObj, setCurrObj] = useState({});
   const [loading, setLoading] = useState(true);
   const type = history.location.query?.type || 'article';
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (modifyButNotSave) {
+        const confirmationMessage = '你确定要离开此页面吗？未保存的数据可能会丢失。';
+        event.returnValue = confirmationMessage; // 现代浏览器需要这个赋值
+        return confirmationMessage; // 某些浏览器可能仍然需要这个返回值
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [modifyButNotSave]);
 
 
   useEffect(() => {
@@ -154,7 +171,8 @@ export default function () {
 
         await fetchData();
       }
-
+      // 保存成功
+      setModifyButNotSave(false);
       message.success('保存成功！');
     }
     setLoading(false);
@@ -193,6 +211,8 @@ export default function () {
           value={value}
           onChange={(val) => {
             setValue(val);
+            // 修改了但是没有编辑
+            setModifyButNotSave(true);
           }}
         />
       </div>
