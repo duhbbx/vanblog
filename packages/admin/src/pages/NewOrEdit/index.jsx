@@ -132,6 +132,8 @@ export default function () {
 
     if (!match) {
       setValue(`<!-- ${title} -->\n\n` + (content || ''))
+    } else {
+      setValue(content);
     }
   }
 
