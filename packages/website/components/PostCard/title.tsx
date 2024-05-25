@@ -49,7 +49,7 @@ export function Title(props: {
               ? "/admin/editor?type=about"
               : `/admin/new-or-edit?type=article&id=${props.id}`
           }
-          target="_blank"
+          target="_self"
         >
           <div className=" text-dark dark:text-gray-700">
             <div>编辑</div>
