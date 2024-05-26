@@ -2,7 +2,7 @@ import Editor from '@/components/Editor';
 import {createArticle, getArticleById, updateArticle,} from '@/services/van-blog/api';
 import {getPathname} from '@/services/van-blog/getPathname';
 import {message, Upload} from 'antd';
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useState, useRef} from 'react';
 import {history} from 'umi';
 
 
@@ -221,6 +221,28 @@ export default function () {
     }
   };
 
+  const editorRef = useRef(null);
+
+  // 定义要在按下 Ctrl + D 时执行的方法
+  const handleCtrlD = () => {
+    console.log('Ctrl + D pressed');
+    // 在这里调用你希望在按下 Ctrl + D 时执行的组件方法
+  };
+
+  // 确保在组件挂载后获取 editor 实例
+  useEffect(() => {
+    if (editorRef.current) {
+      const { editor } = editorRef.current;
+      // 在 editor 实例上设置自定义的快捷键绑定
+      editor.on('keydown', (cm, event) => {
+        if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'd') {
+          // event.preventDefault();
+          handleCtrlD();
+        }
+      });
+    }
+  }, [editorRef]);
+
   return (
     <div className="editor-full" style={{overflow: 'hidden'}}>
       <div style={{height: '100%'}}>
@@ -240,6 +262,7 @@ export default function () {
           loading={loading}
           setLoading={setLoading}
           value={value}
+          ref={editorRef}
           onChange={(val) => {
             setValue(val);
             // 修改了但是没有编辑
