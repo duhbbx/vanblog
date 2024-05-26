@@ -157,8 +157,24 @@ export default function () {
     }
   }
 
-  const saveFn = async () => {
+  const replaceMathFormulaMark = () => {
+    // Replace \( with $
+    let result = value.replace(/\\\(/g, '$');
 
+    // Replace \) with $
+    result = result.replace(/\\\)/g, '$');
+
+    // Replace \[ with $$
+    result = result.replace(/\\\[/g, '$$');
+
+    // Replace \] with $$
+    result = result.replace(/\\]/g, '$$');
+
+   setValue(value);
+  }
+
+  const saveFn = async () => {
+    replaceMathFormulaMark();
     const data = {}
     data.content = value;
     data.title = extractTitle();
