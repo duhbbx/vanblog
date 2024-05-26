@@ -31,9 +31,9 @@ export default function () {
 
 
   useEffect(() => {
-    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keydown', onKeyDown, true);
     return () => {
-      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keydown', onKeyDown, true);
     };
   }, [currObj, value, type]);
   const onKeyDown = (ev) => {
