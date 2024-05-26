@@ -170,7 +170,7 @@ export default function () {
     // Replace \] with $$
     result = result.replace(/\\]/g, '$$');
 
-   setValue(value);
+   setValue(result);
   }
 
   const saveFn = async () => {
