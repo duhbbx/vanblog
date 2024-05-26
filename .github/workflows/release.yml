@@ -47,3 +47,10 @@ jobs:
           tags: |
             "docker.io/duhbbx/vanblog:${{ steps.get_version.outputs.VERSION }}"
             "docker.io/duhbbx/vanblog:latest"
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.6.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: 服务器上部署
+        run: |
+          ssh root@note.duhbb.com "cd /root/vanblog && ./deploy_script.sh"
