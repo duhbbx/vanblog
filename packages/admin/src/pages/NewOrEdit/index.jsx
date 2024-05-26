@@ -165,10 +165,10 @@ export default function () {
     result = result.replace(/\\\)/g, '$');
 
     // Replace \[ with $$
-    result = result.replace(/\\\[/g, '$$');
+    result = result.replace(/\\\[/g, '$$$$');
 
     // Replace \] with $$
-    result = result.replace(/\\]/g, '$$');
+    result = result.replace(/\\]/g, '$$$$');
     setValue(result);
     return result;
   }
