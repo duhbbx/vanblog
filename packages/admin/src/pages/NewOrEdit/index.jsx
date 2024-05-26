@@ -169,7 +169,7 @@ export default function () {
 
     // Replace \] with $$
     result = result.replace(/\\]/g, '$$');
-
+    setValue(result);
     return result;
   }
 
