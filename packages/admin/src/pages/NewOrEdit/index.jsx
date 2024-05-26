@@ -2,7 +2,7 @@ import Editor from '@/components/Editor';
 import {createArticle, getArticleById, updateArticle,} from '@/services/van-blog/api';
 import {getPathname} from '@/services/van-blog/getPathname';
 import {message, Upload} from 'antd';
-import {useCallback, useEffect, useState, useRef} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {history} from 'umi';
 
 
@@ -170,13 +170,12 @@ export default function () {
     // Replace \] with $$
     result = result.replace(/\\]/g, '$$');
 
-   setValue(result);
+    return result;
   }
 
   const saveFn = async () => {
-    replaceMathFormulaMark();
     const data = {}
-    data.content = value;
+    data.content = replaceMathFormulaMark()
     data.title = extractTitle();
     setLoading(true);
     if (type === 'article') {
