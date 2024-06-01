@@ -963,18 +963,19 @@ export class ArticleProvider {
         $and,
       })
       .exec();
+    // 实际上就是搜索之后重要性进行排序
     const s = str.toLocaleLowerCase();
     const titleData = rawData.filter((each) =>
-      each.title.toLocaleLowerCase().includes(s),
+      each.title && each.title.toLocaleLowerCase().includes(s)
     );
     const contentData = rawData.filter((each) =>
-      each.content.toLocaleLowerCase().includes(s),
+      each.content && each.content.toLocaleLowerCase().includes(s)
     );
     const categoryData = rawData.filter((each) =>
-      each.category.toLocaleLowerCase().includes(s),
+      each.category && each.category.toLocaleLowerCase().includes(s)
     );
     const tagData = rawData.filter((each) =>
-      each.tags.map((t) => t.toLocaleLowerCase()).includes(s),
+      each.tags && each.tags.some((t) => t && t.toLocaleLowerCase().includes(s))
     );
     const sortedData = [
       ...titleData,
