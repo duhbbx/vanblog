@@ -71,3 +71,11 @@ export class Article extends Document {
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(Article);
+
+// 添加复合索引和全文索引
+ArticleSchema.index({
+  content: 'text',
+  title: 'text',
+  category: 'text',
+  tags: 'text',
+});

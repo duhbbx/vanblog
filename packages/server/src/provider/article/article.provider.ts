@@ -926,12 +926,14 @@ export class ArticleProvider {
   ): Promise<Article[]> {
     const $and: any = [
       {
-        $or: [
-          { content: { $regex: `${str}`, $options: 'i' } },
-          { title: { $regex: `${str}`, $options: 'i' } },
-          { category: { $regex: `${str}`, $options: 'i' } },
-          { tags: { $regex: `${str}`, $options: 'i' } },
-        ],
+        // $or: [
+        //   { content: { $regex: `${str}`, $options: 'i' } },
+        //   { title: { $regex: `${str}`, $options: 'i' } },
+        //   { category: { $regex: `${str}`, $options: 'i' } },
+        //   { tags: { $regex: `${str}`, $options: 'i' } },
+        // ],
+        // 走全文索引
+        $text: { $search: str },
       },
       {
         $or: [
