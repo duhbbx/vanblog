@@ -687,10 +687,7 @@ export class ArticleProvider {
   }
 
   async getByIdOrPathname(id: string | number, view: ArticleView) {
-    const articleByPathname = await this.getByPathName(
-      String(id),
-      view,
-    );
+    const articleByPathname = await this.getByPathName(String(id), view);
 
     if (articleByPathname) {
       return articleByPathname;
@@ -935,6 +932,7 @@ export class ArticleProvider {
         // 走全文索引
         $text: { $search: str },
       },
+      { score: { $meta: 'textScore' } },
       {
         $or: [
           {
@@ -962,34 +960,38 @@ export class ArticleProvider {
       .find({
         $and,
       })
+      .sort({ score: { $meta: 'textScore' } })
       .exec();
+
+    return rawData;
+
     // 实际上就是搜索之后重要性进行排序
-    const s = str.toLocaleLowerCase();
-    const titleData = rawData.filter((each) =>
-      each.title && each.title.toLocaleLowerCase().includes(s)
-    );
-    const contentData = rawData.filter((each) =>
-      each.content && each.content.toLocaleLowerCase().includes(s)
-    );
-    const categoryData = rawData.filter((each) =>
-      each.category && each.category.toLocaleLowerCase().includes(s)
-    );
-    const tagData = rawData.filter((each) =>
-      each.tags && each.tags.some((t) => t && t.toLocaleLowerCase().includes(s))
-    );
-    const sortedData = [
-      ...titleData,
-      ...contentData,
-      ...tagData,
-      ...categoryData,
-    ];
-    const resData = [];
-    for (const e of sortedData) {
-      if (!resData.includes(e)) {
-        resData.push(e);
-      }
-    }
-    return resData;
+    // const s = str.toLocaleLowerCase();
+    // const titleData = rawData.filter((each) =>
+    //   each.title && each.title.toLocaleLowerCase().includes(s)
+    // );
+    // const contentData = rawData.filter((each) =>
+    //   each.content && each.content.toLocaleLowerCase().includes(s)
+    // );
+    // const categoryData = rawData.filter((each) =>
+    //   each.category && each.category.toLocaleLowerCase().includes(s)
+    // );
+    // const tagData = rawData.filter((each) =>
+    //   each.tags && each.tags.some((t) => t && t.toLocaleLowerCase().includes(s))
+    // );
+    // const sortedData = [
+    //   ...titleData,
+    //   ...contentData,
+    //   ...tagData,
+    //   ...categoryData,
+    // ];
+    // const resData = [];
+    // for (const e of sortedData) {
+    //   if (!resData.includes(e)) {
+    //     resData.push(e);
+    //   }
+    // }
+    // return resData;
   }
 
   async findAll(): Promise<Article[]> {
