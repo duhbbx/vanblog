@@ -1,23 +1,14 @@
-import {
-  Inject,
-  Injectable,
-  forwardRef,
-  NotFoundException,
-} from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import {
-  CreateArticleDto,
-  SearchArticleOption,
-  UpdateArticleDto,
-} from 'src/types/article.dto';
-import { Article, ArticleDocument } from 'src/scheme/article.schema';
-import { parseImgLinksOfMarkdown } from 'src/utils/parseImgOfMarkdown';
-import { wordCount } from 'src/utils/wordCount';
-import { MetaProvider } from '../meta/meta.provider';
-import { VisitProvider } from '../visit/visit.provider';
-import { sleep } from 'src/utils/sleep';
-import { CategoryDocument } from 'src/scheme/category.schema';
+import {forwardRef, Inject, Injectable, NotFoundException,} from '@nestjs/common';
+import {InjectModel} from '@nestjs/mongoose';
+import {Model} from 'mongoose';
+import {CreateArticleDto, SearchArticleOption, UpdateArticleDto,} from 'src/types/article.dto';
+import {Article, ArticleDocument} from 'src/scheme/article.schema';
+import {parseImgLinksOfMarkdown} from 'src/utils/parseImgOfMarkdown';
+import {wordCount} from 'src/utils/wordCount';
+import {MetaProvider} from '../meta/meta.provider';
+import {VisitProvider} from '../visit/visit.provider';
+import {sleep} from 'src/utils/sleep';
+import {CategoryDocument} from 'src/scheme/category.schema';
 
 export type ArticleView = 'admin' | 'public' | 'list';
 
@@ -921,16 +912,14 @@ export class ArticleProvider {
     str: string,
     includeHidden: boolean,
   ): Promise<Article[]> {
+    // 将输入字符串拆分为单词，并构造搜索查询
+    const words = str.split(' ');
+    const searchQuery = words.map((word) => `"${word}"`).join(' ');
+
     const $and: any = [
       {
-        // $or: [
-        //   { content: { $regex: `${str}`, $options: 'i' } },
-        //   { title: { $regex: `${str}`, $options: 'i' } },
-        //   { category: { $regex: `${str}`, $options: 'i' } },
-        //   { tags: { $regex: `${str}`, $options: 'i' } },
-        // ],
         // 走全文索引
-        $text: { $search: str },
+        $text: { $search: searchQuery },
       },
       {
         $or: [
@@ -958,7 +947,7 @@ export class ArticleProvider {
     const projection = {
       score: { $meta: 'textScore' },
     };
-    const rawData = await this.articleModel
+    return await this.articleModel
       .find(
         {
           $and,
@@ -967,8 +956,6 @@ export class ArticleProvider {
       )
       .sort({ score: { $meta: 'textScore' } }) // 正确的使用位置
       .exec();
-
-    return rawData;
 
     // 实际上就是搜索之后重要性进行排序
     // const s = str.toLocaleLowerCase();
