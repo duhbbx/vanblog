@@ -959,10 +959,12 @@ export class ArticleProvider {
       score: { $meta: 'textScore' },
     };
     const rawData = await this.articleModel
-      .find({
-        $and,
-      })
-      .select(projection)
+      .find(
+        {
+          $and,
+        },
+        projection,
+      )
       .sort({ score: { $meta: 'textScore' } }) // 正确的使用位置
       .exec();
 
