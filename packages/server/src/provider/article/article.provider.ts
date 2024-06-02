@@ -932,7 +932,6 @@ export class ArticleProvider {
         // 走全文索引
         $text: { $search: str },
       },
-      { score: { $meta: 'textScore' } },
       {
         $or: [
           {
@@ -960,7 +959,8 @@ export class ArticleProvider {
       .find({
         $and,
       })
-      .sort({ score: { $meta: 'textScore' } })
+      .sort({ score: { $meta: 'textScore' } }) // 正确的使用位置
+      .projection({ score: { $meta: 'textScore' } }) // 使用projection
       .exec();
 
     return rawData;
