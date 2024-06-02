@@ -955,12 +955,15 @@ export class ArticleProvider {
         ],
       });
     }
+    const projection = {
+      score: { $meta: 'textScore' },
+    };
     const rawData = await this.articleModel
       .find({
         $and,
       })
+      .select(projection)
       .sort({ score: { $meta: 'textScore' } }) // 正确的使用位置
-      .projection({ score: { $meta: 'textScore' } }) // 使用projection
       .exec();
 
     return rawData;
