@@ -45,7 +45,7 @@ ARG VAN_BLOG_BUILD_SERVER
 ENV VAN_BLOG_SERVER_URL ${VAN_BLOG_BUILD_SERVER}
 ARG VAN_BLOG_VERSIONS
 ENV VAN_BLOG_VERSION ${VAN_BLOG_VERSIONS}
-RUN npm install --global pnpm
+RUN npm install --global pnpm@8
 
 RUN pnpm config set network-timeout 600000 -g
 RUN pnpm config set registry https://registry.npmjs.org -g
@@ -53,7 +53,7 @@ RUN pnpm config set fetch-retries 20 -g
 RUN pnpm config set fetch-timeout 600000 -g
 
 # 修改构建脚本 pnpm 的版本不一致
-RUN pnpm install --frozen-lockfile --force
+RUN pnpm install --frozen-lockfile
 RUN pnpm build:website
 
 
