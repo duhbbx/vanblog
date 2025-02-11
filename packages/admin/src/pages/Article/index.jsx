@@ -165,11 +165,12 @@ export default () => {
 
               data.tags = Array.from(
                 new Set(
-                    data.tags?.split(",")
+                  (typeof data?.tags === "string" ? data.tags.split(",") : [])
                     .map(v => v.trim())
                     .filter(v => !!v)
                 )
-            )
+              );
+              
 
               data.id = undefined
               if (rowKey > 0) {
