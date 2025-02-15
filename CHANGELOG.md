@@ -1,4 +1,6 @@
 # Changelog
+### [0.54.36](https://github.com/duhbbx/vanblog/compare/v0.54.35...v0.54.36) (2025-02-15)
+
 ### [0.54.35](https://github.com/duhbbx/vanblog/compare/v0.54.34...v0.54.35) (2025-02-11)
 
 ### [0.54.34](https://github.com/duhbbx/vanblog/compare/v0.54.33...v0.54.34) (2025-02-11)
