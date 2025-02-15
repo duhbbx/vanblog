@@ -1,6 +1,6 @@
 # 具体每个服务的去看 packages 里面的 Dockerfile
 # 这个是 all in one 的。
-FROM node:20-alpine as ADMIN_BUILDER
+FROM node:22-alpine as ADMIN_BUILDER
 ENV NODE_OPTIONS='--max_old_space_size=4096 --openssl-legacy-provider'
 ENV EEE=production
 WORKDIR /app
@@ -17,7 +17,7 @@ RUN pnpm i
 # RUN sed -i 's/\/assets/\/admin\/assets/g' dist/admin/index.html
 RUN pnpm build
 
-FROM node:18 as SERVER_BUILDER
+FROM node:22 as SERVER_BUILDER
 ENV NODE_OPTIONS=--max_old_space_size=4096
 WORKDIR /app
 COPY ./packages/server/ .
@@ -30,7 +30,7 @@ RUN pnpm config set fetch-timeout 600000 -g
 RUN pnpm i
 RUN pnpm build
 
-FROM node:20-alpine AS WEBSITE_BUILDER
+FROM node:22-alpine AS WEBSITE_BUILDER
 WORKDIR /app
 RUN apk update && apk add --no-cache python3 make g++ && rm -rf /var/cache/apk/*
 COPY ./package.json ./
