@@ -53,7 +53,7 @@ RUN pnpm config set fetch-retries 20 -g
 RUN pnpm config set fetch-timeout 600000 -g
 
 # 修改构建脚本 pnpm 的版本不一致
-RUN pnpm install --frozen-lockfile
+RUN pnpm i
 RUN pnpm build:website
 
 
